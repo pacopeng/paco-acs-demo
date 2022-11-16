@@ -1,11 +1,12 @@
 # Table of Contents
 
 1. [Intro](#intro)
-2. [Role - Info Security Engineer](#role-info-security-engineer)
-3. [Third Example](#third-example)
-4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
+1. [Role - Info Security Engineer](#role---info-security-engineer)
+1. [Role - DevSecOps Engineer](#role---devsecops-engineer)
+1. [Role - Developer](#role---developer)
 
 ## Intro
+
 Demo is an adaptation from original [google docs](https://docs.google.com/document/d/1q_7PE0ecYTFfrAAgBLoYya9V5VmzPP4ZsA9tUHKit28/edit?pli=1#). Perform following tasks:
 
 * Provision the pre-deployed ACS cluster from [RHPDS](https://rhpds.redhat.com/catalog/explorer) -> Multi Product Demo -> Openshift 4 Advanced Cluster Security 3.
