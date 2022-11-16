@@ -1,6 +1,14 @@
-# ACS Demo
+# Table of Contents
 
-Provision the pre-deployed ACS cluster from [RHPDS](https://rhpds.redhat.com/catalog/explorer) -> Multi Product Demo -> Openshift 4 Advanced Cluster Security 3.
+1. [Intro](#intro)
+2. [Role - Info Security Engineer](#role-info-security-engineer)
+3. [Third Example](#third-example)
+4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
+
+## Intro
+Demo is an adaptation from original [google docs](https://docs.google.com/document/d/1q_7PE0ecYTFfrAAgBLoYya9V5VmzPP4ZsA9tUHKit28/edit?pli=1#). Perform following tasks:
+
+* Provision the pre-deployed ACS cluster from [RHPDS](https://rhpds.redhat.com/catalog/explorer) -> Multi Product Demo -> Openshift 4 Advanced Cluster Security 3.
 
 > Tips:
 >
@@ -8,18 +16,59 @@ Provision the pre-deployed ACS cluster from [RHPDS](https://rhpds.redhat.com/cat
 > 2. Post provisioning make sure the lifetime and runtime are extended. This is to avoid ACS going down in the middle of the demo.
 >
 
-Perform following tasks:
-* Upgrade the ACS cluster to latest (3.72.1). Check scanner and scanner pods are running in 
-* Upgrade the OCP cluster to latest (4.10.z)
+* Upgrade the ACS cluster to latest (3.72.1). Perform the upgrade from 3.70 -> 3.71 -> 3.72
+* Check scanner and scanner-db pods are running in `stackrox` namespace. If not then delete the scanner-db pod and then scanner. You need to do this everytime the service is started on RHPDS.
+* Optional: Upgrade the OCP cluster to latest (4.10.z)
 
-### Role - Info Security Engineer
+## Role - Info Security Engineer
 
-#### Use Case - Policy Management
+### Use Case - Policy Management
 
+### Use Case - Compliance Reporting and Remediation
 
-### Role - DevSecOps Engineer
+Refer to the [document from BU](https://docs.google.com/document/d/1I88LUsDwviixecXSFL4yq7oZOgUnlOESqf6Qmt5karM/edit#heading=h.8xj75c9dlssy)
 
-### Role - Developer
+* Install compliance operator on the secured OCP 4 cluster
+* Create a [ScanSettingBinding](https://github.com/srcporter/acs-examples/blob/main/sscan.yaml) to run a Compliance Scan on OCP 4 cluster
+
+```yml
+#cat sscan.yaml
+apiVersion: compliance.openshift.io/v1alpha1
+kind: ScanSettingBinding
+metadata:
+  name: cis-compliance
+profiles:
+  - name: ocp4-cis-node
+    kind: Profile
+    apiGroup: compliance.openshift.io/v1alpha1
+  - name: ocp4-cis
+    kind: Profile
+    apiGroup: compliance.openshift.io/v1alpha1
+settingsRef:
+  name: default
+  kind: ScanSetting
+  apiGroup: compliance.openshift.io/v1alpha1
+
+```
+
+```bash
+oc -n openshift-compliance create -f sscan.yaml
+```
+
+* Restart the sensor by deleting the sensor pod.
+
+```bash
+oc -n stackrox delete pod -lapp=sensor
+```
+
+* Kick off a compliance scan in ACS
+* Click on "Compliance" from left side menu. "ocp4-cis" and "ocp4-cis-node" should appear in the standards.
+* click ocp4-cis to see all the controls.
+* 
+
+## Role - DevSecOps Engineer
+
+## Role - Developer
 
 
 1. SECURITY - Show a policy and edit the policy and show how it can be customized. Platform Configuration -> Policy Management. Use "Policy": "Fixable Severity at least Important"
