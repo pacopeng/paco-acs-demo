@@ -2,14 +2,19 @@
 
 Provision the pre-deployed ACS cluster from [RHPDS](https://rhpds.redhat.com/catalog/explorer) -> Multi Product Demo -> Openshift 4 Advanced Cluster Security 3.
 
+> Tips:
+>
+> 1. Please note the provisioing can take upto an hour. If the cluster is already provisioned then "Start" the service. Typically it takes 5 to 10 mins.
+> 2. Post provisioning make sure the lifetime and runtime are extended. This is to avoid ACS going down in the middle of the demo.
+>
+
 Perform following tasks:
 * Upgrade the ACS cluster to latest (3.72.1). Check scanner and scanner pods are running in 
 * Upgrade the OCP cluster to latest (4.10.z)
 
 ### Role - Info Security Engineer
 
-#### Policy Management
-
+#### Use Case - Policy Management
 
 
 ### Role - DevSecOps Engineer
