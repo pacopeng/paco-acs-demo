@@ -27,7 +27,7 @@ Demo is an adaptation from original [google docs](https://docs.google.com/docume
 
 ### Use Case - Compliance Reporting and Remediation
 
-Refer to the [document from BU](https://docs.google.com/document/d/1I88LUsDwviixecXSFL4yq7oZOgUnlOESqf6Qmt5karM/edit#heading=h.8xj75c9dlssy)
+Refer to the [document from BU](https://docs.google.com/document/d/1I88LUsDwviixecXSFL4yq7oZOgUnlOESqf6Qmt5karM/edit#heading=h.8xj75c9dlssy). Summary of steps are below:
 
 * Install compliance operator on the secured OCP 4 cluster
 * Create a [ScanSettingBinding](https://github.com/srcporter/acs-examples/blob/main/sscan.yaml) to run a Compliance Scan on OCP 4 cluster
@@ -38,6 +38,7 @@ apiVersion: compliance.openshift.io/v1alpha1
 kind: ScanSettingBinding
 metadata:
   name: cis-compliance
+  namespace: openshift-compliance
 profiles:
   - name: ocp4-cis-node
     kind: Profile
@@ -63,17 +64,24 @@ oc -n stackrox delete pod -lapp=sensor
 ```
 
 * Kick off a compliance scan in ACS
-* Click on "Compliance" from left side menu. "ocp4-cis" and "ocp4-cis-node" should appear in the standards.
-* click ocp4-cis to see all the controls.
-* 
+* Examine Compliance Results for Workloads in ACS
+  * Click on "Compliance" from left side menu. "ocp4-cis" and "ocp4-cis-node" should appear in the standards.
+  * click ocp4-cis to see all the controls.
+* Examine Compliance Reports for Non-OpenShift Kubernetes Clusters. __*[TODO] Works for Kubernetes clusters like GKE, AKS, and EKS. DEMO DOESN'T COVER.*__
+  * Navigate back to the ACS Compliance page
+  * In the section labeled "PASSING STANDARDS ACROSS CLUSTERS", click on CIS Docker.
+  * Many of the controls in CIS Docker refer to the configuration of the Docker engine on each Kubernetes nodes, but a significant number of CIS Docker controls are best practices for building and using containers, and ACS has policies to enforce their use.
+* Examine CIS Docker Benchmark Policies in ACS
+  * Navigate to "Platform Configuration" -> "Policy Management". Add filter "Policy:" "Docker CIS" to see the policies contributing to Docker CIS standards.
+  * Walk through the interface. Edit the policy and show all the steps in detail.
+
 
 ## Role - DevSecOps Engineer
 
 ## Role - Developer
 
-
 1. SECURITY - Show a policy and edit the policy and show how it can be customized. Platform Configuration -> Policy Management. Use "Policy": "Fixable Severity at least Important"
-1. DEVOPS - Teckton Pipeline trigger integration with stackrox. Show the image scan and image check against mongodb image. 
+1. DEVOPS - Teckton Pipeline trigger integration with stackrox. Show the image scan and image check against mongodb image.
     1. No vul -> quay.io/mongodb/mongodb-enterprise-database:2.0.2
     1. Old image with vul -> quay.io/mongodb/mongodb-enterprise-database:0.1
     1. Then switch off the policy "Policy": "Fixable Severity at least Important" and re-run the previous step and check the logs.
@@ -189,3 +197,17 @@ spec:
     name: jar-multi-stage
     weight: null
 ```
+
+## Role - OpenShift/Kubernetes Platform Engineer
+
+### Use Case - Add cluster to the ACS
+
+### Use Case - Integrate enterprise registries + scanner
+
+### Use Case - Integrate with notification systems
+
+### Use Case - Backup integration
+
+### Use Case - Third Party automation platform integration via stackrox API
+
+### Use Case - Signature Integration
