@@ -25,6 +25,24 @@ Demo is an adaptation from original [google docs](https://docs.google.com/docume
 
 ### Use Case - Policy Management
 
+* Examine CIS Docker Benchmark Policies in ACS
+  * Navigate to `Platform Configuration` -> "Policy Management". Add filter "Policy:" "Docker CIS" to see the policies contributing to Docker CIS standards.
+  * Walk through the interface. Edit the policy and show all the steps in detail.
+  * Navigate to the `Violations` page. Apply the filter "Policy": "CIS Docker" OR "Policy": "Latest".
+  * Exclude the violation from the policy.
+  * Navigate to `Platform Configuration` -> "Policy Management" and find the policy. Edit and show how easily the policy can be included back.
+* Configure Policy in ACS to Invoke Compliance related Controls
+  * Inspect the NIST 800-190 Guidance for `Control 4.2.2`
+  * Observe `Control 4.2.2` being `0%`. Explain why!
+  * Enforce Policies that Meet Guidance for `NIST Control 4.2.2`
+    * Activate two separate default system policies that, together, meet this control's guidance
+    * `90-day Image Age` and `Latest tag`
+    * Come back to the compliance page to see the enforcements reflecting in the %age.
+* Examine Compliance Reports for Non-OpenShift Kubernetes Clusters. __*[TODO] Works for Kubernetes clusters like GKE, AKS, and EKS. DEMO DOESN'T COVER.*__
+  * Navigate back to the ACS Compliance page
+  * In the section labeled "PASSING STANDARDS ACROSS CLUSTERS", click on CIS Docker.
+  * Many of the controls in CIS Docker refer to the configuration of the Docker engine on each Kubernetes nodes, but a significant number of CIS Docker controls are best practices for building and using containers, and ACS has policies to enforce their use.
+
 ### Use Case - Compliance Reporting and Remediation
 
 Refer to the [document from BU](https://docs.google.com/document/d/1I88LUsDwviixecXSFL4yq7oZOgUnlOESqf6Qmt5karM/edit#heading=h.8xj75c9dlssy). Summary of steps are below:
@@ -67,18 +85,18 @@ oc -n stackrox delete pod -lapp=sensor
 * Examine Compliance Results for Workloads in ACS
   * Click on "Compliance" from left side menu. "ocp4-cis" and "ocp4-cis-node" should appear in the standards.
   * click ocp4-cis to see all the controls.
-* Examine Compliance Reports for Non-OpenShift Kubernetes Clusters. __*[TODO] Works for Kubernetes clusters like GKE, AKS, and EKS. DEMO DOESN'T COVER.*__
-  * Navigate back to the ACS Compliance page
-  * In the section labeled "PASSING STANDARDS ACROSS CLUSTERS", click on CIS Docker.
-  * Many of the controls in CIS Docker refer to the configuration of the Docker engine on each Kubernetes nodes, but a significant number of CIS Docker controls are best practices for building and using containers, and ACS has policies to enforce their use.
-* Examine CIS Docker Benchmark Policies in ACS
-  * Navigate to "Platform Configuration" -> "Policy Management". Add filter "Policy:" "Docker CIS" to see the policies contributing to Docker CIS standards.
-  * Walk through the interface. Edit the policy and show all the steps in detail.
+
+
 
 
 ## Role - DevSecOps Engineer
 
 ## Role - Developer
+
+### Use Case - Scan the code in the IDE
+
+* Install plugin from the marketplace https://marketplace.visualstudio.com/items?itemName=redhat.fabric8-analytics
+* 
 
 1. SECURITY - Show a policy and edit the policy and show how it can be customized. Platform Configuration -> Policy Management. Use "Policy": "Fixable Severity at least Important"
 1. DEVOPS - Teckton Pipeline trigger integration with stackrox. Show the image scan and image check against mongodb image.
