@@ -21,6 +21,8 @@ Demo is an adaptation from original [google docs](https://docs.google.com/docume
 * Check scanner and scanner-db pods are running in `stackrox` namespace. If not then delete the scanner-db pod and then scanner. You need to do this everytime the service is started on RHPDS.
 * Optional: Upgrade the OCP cluster to latest (4.10.z)
 
+----------
+
 ## Role - Info Security Engineer
 
 ### Use Case - Policy Management
@@ -89,7 +91,7 @@ oc -n stackrox delete pod -lapp=sensor
 
 ### Create a new policy
 
-Create a new policy to mandate the deployment objects to have email-id.
+Create a new policy to mandate the deployment objects to have Change Request Id.
 
 * Navigate to `Policy Management` -> `Policies`. Filter based on "Policy:" "deployment"
 * Select "Deployment should have at least one ingress Network Policy" and clone it.
@@ -153,6 +155,8 @@ apt-get update
 
 * Click on the seach icon on the top right corner and demo different filters.
 * Apply filter "policy:" "Deployment", "image:" ""
+
+----------
 
 ## Role - DevSecOps Engineer
 
@@ -274,6 +278,8 @@ spec:
 
 ### Use Case: admission.stackrox.io/break-glass:jira-3423
 
+----------
+
 ## Role - Developer
 
 ### Use Case - Scan the code in the IDE
@@ -344,6 +350,8 @@ Name: writable-host-mount
 1. SECURITY - security team can translate there control in the product. Like add the email id as mandatory annotation in the deployment.
     1. Platform Configuration -> Policy Management. Use "Policy": "email"
 
+
+----------
 
 ## Role - OpenShift/Kubernetes Platform Engineer
 

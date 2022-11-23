@@ -1,0 +1,78 @@
+{
+    "policies": [
+        {
+            "id": "e93c08ff-b730-4b11-9a47-ee0703edba1b",
+            "name": "Deployments should have Change Request annotation",
+            "description": "",
+            "rationale": "The release management and security team needs to have the traceability of the application's change management in a multi-tenant environemnt.",
+            "remediation": "Add cr-id annotation to the deployment manifest. E.g. \"cr-id\": \"CR-12345\"",
+            "disabled": false,
+            "categories": [
+                "DevOps Best Practices",
+                "Security Best Practices"
+            ],
+            "lifecycleStages": [
+                "DEPLOY"
+            ],
+            "eventSource": "NOT_APPLICABLE",
+            "exclusions": [
+                {
+                    "name": "",
+                    "deployment": {
+                        "name": "",
+                        "scope": {
+                            "cluster": "",
+                            "namespace": "kube-system",
+                            "label": null
+                        }
+                    },
+                    "image": null,
+                    "expiration": null
+                },
+                {
+                    "name": "",
+                    "deployment": {
+                        "name": "",
+                        "scope": {
+                            "cluster": "",
+                            "namespace": "istio-system",
+                            "label": null
+                        }
+                    },
+                    "image": null,
+                    "expiration": null
+                }
+            ],
+            "scope": [],
+            "severity": "MEDIUM_SEVERITY",
+            "enforcementActions": [],
+            "notifiers": [],
+            "lastUpdated": "2022-11-23T11:43:29.401844322Z",
+            "SORTName": "",
+            "SORTLifecycleStage": "",
+            "SORTEnforcement": false,
+            "policyVersion": "1.1",
+            "policySections": [
+                {
+                    "sectionName": "Policy Section 2",
+                    "policyGroups": [
+                        {
+                            "fieldName": "Required Annotation",
+                            "booleanOperator": "OR",
+                            "negate": false,
+                            "values": [
+                                {
+                                    "value": "cr-id="
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "mitreAttackVectors": [],
+            "criteriaLocked": false,
+            "mitreVectorsLocked": false,
+            "isDefault": false
+        }
+    ]
+}
