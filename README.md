@@ -8,12 +8,10 @@
     1. [Use Case - Vulnerability Management](#use-case---vulnerability-management)
     1. [Use Case - Add a custom policy based on Risk Identified](#use-case---add-a-custom-policy-based-on-risk-identified)
     1. [Use Case - Global Search](#use-case---global-search)
-    1. 
 1. [Role - DevSecOps Engineer](#role---devsecops-engineer)
     1. [Use Case - Pipeline to Images Scan & Image Check](#use-case---pipeline-to-images-scan--image-check)
     1. [Use Case - Pipeline to check the deployment](#use-case---pipeline-to-check-the-deployment)
     1. [Use Case: admission.stackrox.io/break-glass:jira-3423](#use-case-admissionstackroxiobreak-glassjira-3423)
-    1. 
 1. [Role - Developer](#role---developer)
     1. [Use Case - Scan the code in the IDE](#use-case---scan-the-code-in-the-ide)
     1. [Use Case - Scan the code with KubeLinter](#use-case---scan-the-code-with-kubelinter)
@@ -317,7 +315,7 @@ spec:
 
 ### Use Case - Scan the code in the IDE
 
-* Install plugin from the marketplace https://marketplace.visualstudio.com/items?itemName=redhat.fabric8-analytics
+* Install plugin from the [marketplace](https://marketplace.visualstudio.com/items?itemName=redhat.fabric8-analytics)
 * Walk through the sample code and it's analysis.
 
 ----------
