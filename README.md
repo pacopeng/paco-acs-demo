@@ -21,8 +21,6 @@ Demo is an adaptation from original [google docs](https://docs.google.com/docume
 * Check scanner and scanner-db pods are running in `stackrox` namespace. If not then delete the scanner-db pod and then scanner. You need to do this everytime the service is started on RHPDS.
 * Optional: Upgrade the OCP cluster to latest (4.10.z)
 
-----------
-
 ## Role - Info Security Engineer
 
 ### Use Case - Policy Management
