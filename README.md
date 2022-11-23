@@ -45,6 +45,8 @@ Demo is an adaptation from original [google docs](https://docs.google.com/docume
   * In the section labeled "PASSING STANDARDS ACROSS CLUSTERS", click on CIS Docker.
   * Many of the controls in CIS Docker refer to the configuration of the Docker engine on each Kubernetes nodes, but a significant number of CIS Docker controls are best practices for building and using containers, and ACS has policies to enforce their use.
 
+----------
+
 ### Use Case - Compliance Reporting and Remediation
 
 Refer to the [document from BU](https://docs.google.com/document/d/1I88LUsDwviixecXSFL4yq7oZOgUnlOESqf6Qmt5karM/edit#heading=h.8xj75c9dlssy). Summary of steps are below:
@@ -89,7 +91,9 @@ oc -n stackrox delete pod -lapp=sensor
   * click ocp4-cis to see all the controls.
 * In case the reports are not generated then edit the CronJob `cis-compliance-rerunner` and make the schedule as `*/5 */1 * * *` which translate to `At every 5th minute past every hour`. Alternatively you can add your [own expression](https://crontab.guru/#*/5_*/1_*_*_*).
 
-### Create a new policy
+----------
+
+### Use Case - Create a new policy
 
 Create a new policy to mandate the deployment objects to have Change Request Id.
 
@@ -103,6 +107,8 @@ Create a new policy to mandate the deployment objects to have Change Request Id.
 * Goto the violations page and apply the filter "namespace:" "microservices-demo" and "deployment:" "adservice"
 * observe the vilation related to the email.
 * noe edit the deployment manifest and add the label and see the violation being gone.
+
+----------
 
 ### Use Case - Vulnerability Management
 
@@ -133,6 +139,8 @@ oc exec visa-processor-586d8b989d-l5lhx -c visa-processor -n payments -- head RE
 
 * Click on the violation and walk through the `Violation Events`
 
+----------
+
 ### Use Case - Add a custom policy based on Risk Identified
 
 Security engineer doesn't want users to execute sudo in the pod/container
@@ -150,6 +158,8 @@ apt-get update
 
 * Note the violation being generated. Navigate to Vilation tab with filter "policy:" "sudo".
 * Walk through the "violation events".
+
+----------
 
 ### Use Case - Global Search
 
@@ -169,6 +179,8 @@ Pipelines uses `roxctl` cli to perfrom it's tasks. Documentation is available [h
     1. Old image with vul -> quay.io/mongodb/mongodb-enterprise-database:0.1
     1. Then switch off the policy "Policy": "Fixable Severity at least Important" and re-run the previous step and check the logs.
     1. Switch on the policy back again.
+
+----------
 
 ### Use Case - Pipeline to check the deployment
 
@@ -276,6 +288,8 @@ spec:
     weight: null
 ```
 
+----------
+
 ### Use Case: admission.stackrox.io/break-glass:jira-3423
 
 ----------
@@ -286,6 +300,8 @@ spec:
 
 * Install plugin from the marketplace https://marketplace.visualstudio.com/items?itemName=redhat.fabric8-analytics
 * Walk through the sample code and it's analysis.
+
+----------
 
 ### Use Case - Scan the code with KubeLinter
 
@@ -345,12 +361,6 @@ Name: wildcard-in-rules
 Name: writable-host-mount
 ```
 
-
-1. SECURITY - Show a policy and edit the policy and show how it can be customized. Platform Configuration -> Policy Management. Use "Policy": "Fixable Severity at least Important"
-1. SECURITY - security team can translate there control in the product. Like add the email id as mandatory annotation in the deployment.
-    1. Platform Configuration -> Policy Management. Use "Policy": "email"
-
-
 ----------
 
 ## Role - OpenShift/Kubernetes Platform Engineer
@@ -369,14 +379,28 @@ oc run samba --labels=app=rce --image=vulnerables/cve-2017-7494 -n test
 
 ```
 
+----------
+
 ### Use Case - Integrate enterprise registries + scanner
+
+----------
 
 ### Use Case - Integrate with notification systems
 
+----------
+
 ### Use Case - Integrate ACS with slack
+
+----------
 
 ### Use Case - Backup integration
 
+----------
+
 ### Use Case - Third Party automation platform integration via stackrox API
 
+----------
+
 ### Use Case - Signature Integration
+
+----------
