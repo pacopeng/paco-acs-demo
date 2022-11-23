@@ -85,34 +85,90 @@ oc -n stackrox delete pod -lapp=sensor
 * Examine Compliance Results for Workloads in ACS
   * Click on "Compliance" from left side menu. "ocp4-cis" and "ocp4-cis-node" should appear in the standards.
   * click ocp4-cis to see all the controls.
+* In case the reports are not generated then edit the CronJob `cis-compliance-rerunner` and make the schedule as `*/5 */1 * * *` which translate to `At every 5th minute past every hour`. Alternatively you can add your [own expression](https://crontab.guru/#*/5_*/1_*_*_*).
 
+### Create a new policy
 
+Create a new policy to mandate the deployment objects to have email-id.
 
+* Navigate to `Policy Management` -> `Policies`. Filter based on "Policy:" "deployment"
+* Select "Deployment should have at least one ingress Network Policy" and clone it.
+* Give it a name `Deployments should have Change Request annotation` add a new category as `Operations Best Practices`.
+* add Rationale as `The release management and security team needs to have the traceability of the application's change management in a multi-tenant environemnt.`
+* add Guidance as `Add cr-id annotation to the deployment manifest. E.g. "cr-id": "CR-12345"`.
+* Choose `Deploy` as lifecycle stage. Keep "Response method" as "Inform"
+* After saving the policy, enable the policy.
+* Goto the violations page and apply the filter "namespace:" "microservices-demo" and "deployment:" "adservice"
+* observe the vilation related to the email.
+* noe edit the deployment manifest and add the label and see the violation being gone.
+
+### Use Case - Vulnerability Management
+
+* Navigate to Vulnerability Management home page.
+* Choose a project with filters "deployment:" "visa". Look for policy violation of `Kubernetes Actions: Exec into Pod` and `Unauthorized Process Execution`
+* if you do not see any pod running then please edit the deployment object and delete "securityContent" section
+
+```yml
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  fsGroup: 1000
+
+```
+
+* Wait for a while the pod is coded to trigger few commands that will raise `Unauthorized Process Execution`. Once the violation occurs; navigate to "Risk -> visa-processor -> Risk Indicator -> Suspicious Process Execution" and "Process Discovery"
+* To simulate `Kubernetes Actions: Exec into Pod`; Create a dummy file via oc exec command
+
+```bash
+oc exec visa-processor-586d8b989d-l5lhx -n payments -- df
+
+oc exec visa-processor-586d8b989d-l5lhx -c visa-processor -n payments -- curl -O https://github.com/redhat-apac-stp/acs-demo/blob/main/README.md 
+
+oc exec visa-processor-586d8b989d-l5lhx -c visa-processor -n payments -- head README.md
+
+```
+
+* Click on the violation and walk through the `Violation Events`
+
+### Use Case - Add a custom policy based on Risk Identified
+
+Security engineer doesn't want users to execute sudo in the pod/container
+
+* Navigate to Risk tab. Apply the filter as `processName:` `sudo`.
+* Observe the deployment `visa-processor` already having the violation.
+* press on the `create policy` on the top right corner.
+* fill the form. Note that run time behaviour is already filled. The policy can also be imported from the file `StackRox_Exported_Policies-11_23_2022.json` from the resources folder.
+* To simulate the violation; get a terminal with the visa processor pod and run below commands:
+
+```bash
+sudo -i
+apt-get update
+```
+
+* Note the violation being generated. Navigate to Vilation tab with filter "policy:" "sudo".
+* Walk through the "violation events".
+
+### Use Case - Global Search
+
+* Click on the seach icon on the top right corner and demo different filters.
+* Apply filter "policy:" "Deployment", "image:" ""
 
 ## Role - DevSecOps Engineer
 
-## Role - Developer
+Pipelines uses `roxctl` cli to perfrom it's tasks. Documentation is available [here](https://docs.openshift.com/acs/3.72/cli/getting-started-cli.html).
 
-### Use Case - Scan the code in the IDE
+### Use Case - Pipeline to Images Scan & Image Check
 
-* Install plugin from the marketplace https://marketplace.visualstudio.com/items?itemName=redhat.fabric8-analytics
-* 
-
-1. SECURITY - Show a policy and edit the policy and show how it can be customized. Platform Configuration -> Policy Management. Use "Policy": "Fixable Severity at least Important"
-1. DEVOPS - Teckton Pipeline trigger integration with stackrox. Show the image scan and image check against mongodb image.
+1. Show the image scan and image check against mongodb image.
     1. No vul -> quay.io/mongodb/mongodb-enterprise-database:2.0.2
     1. Old image with vul -> quay.io/mongodb/mongodb-enterprise-database:0.1
     1. Then switch off the policy "Policy": "Fixable Severity at least Important" and re-run the previous step and check the logs.
     1. Switch on the policy back again.
-1. SECURITY - security team can translate there control in the product. Like add the email id as mandatory annotation in the deployment.
-    1. Platform Configuration -> Policy Management. Use "Policy": "email"
-1. SECURITY - See the 
-    1. filter "Images": "mongo"
-1. SECURITY/DEVOPS - Integrate stackrox with slack
-1. 
-1. DEVELOPER - Integrate kube-linter plugin for stackrox. [Github Link](https://github.com/stackrox/kube-linter)
-1. DEVOPS - 
-1. 
+
+### Use Case - Pipeline to check the deployment
+
+1. Show the existing pipeline to scan the deployment manifest.
 
 ```bash
 # base64 encoded yaml to be used to pass to the pipeline demo. It's a busybox image.
@@ -216,13 +272,100 @@ spec:
     weight: null
 ```
 
+### Use Case: admission.stackrox.io/break-glass:jira-3423
+
+## Role - Developer
+
+### Use Case - Scan the code in the IDE
+
+* Install plugin from the marketplace https://marketplace.visualstudio.com/items?itemName=redhat.fabric8-analytics
+* Walk through the sample code and it's analysis.
+
+### Use Case - Scan the code with KubeLinter
+
+* Integrate kube-linter plugin for stackrox. [Github Link](https://github.com/stackrox/kube-linter) and [documentation link](https://docs.kubelinter.io/#/).
+* There are 47 rules already baked in.
+
+```bash
+$ kube-linter checks list | grep -i "Name: "
+
+Name: access-to-create-pods
+Name: access-to-secrets
+Name: cluster-admin-role-binding
+Name: dangling-horizontalpodautoscaler
+Name: dangling-ingress
+Name: dangling-networkpolicy
+Name: dangling-networkpolicypeer-podselector
+Name: dangling-service
+Name: default-service-account
+Name: deprecated-service-account-field
+Name: dnsconfig-options
+Name: docker-sock
+Name: drop-net-raw-capability
+Name: env-var-secret
+Name: exposed-services
+Name: host-ipc
+Name: host-network
+Name: host-pid
+Name: hpa-minimum-three-replicas
+Name: invalid-target-ports
+Name: latest-tag
+Name: minimum-three-replicas
+Name: mismatching-selector
+Name: no-anti-affinity
+Name: no-extensions-v1beta
+Name: no-liveness-probe
+Name: no-node-affinity
+Name: no-read-only-root-fs
+Name: no-readiness-probe
+Name: no-rolling-update-strategy
+Name: non-existent-service-account
+Name: non-isolated-pod
+Name: privilege-escalation-container
+Name: privileged-container
+Name: privileged-ports
+Name: read-secret-from-env-var
+Name: required-annotation-email
+Name: required-label-owner
+Name: run-as-non-root
+Name: sensitive-host-mounts
+Name: ssh-port
+Name: unsafe-proc-mount
+Name: unsafe-sysctls
+Name: unset-cpu-requirements
+Name: unset-memory-requirements
+Name: use-namespace
+Name: wildcard-in-rules
+Name: writable-host-mount
+```
+
+
+1. SECURITY - Show a policy and edit the policy and show how it can be customized. Platform Configuration -> Policy Management. Use "Policy": "Fixable Severity at least Important"
+1. SECURITY - security team can translate there control in the product. Like add the email id as mandatory annotation in the deployment.
+    1. Platform Configuration -> Policy Management. Use "Policy": "email"
+
+
 ## Role - OpenShift/Kubernetes Platform Engineer
 
 ### Use Case - Add cluster to the ACS
 
+* Follow the steps documented [here](https://docs.openshift.com/acs/3.72/installing/install-ocp-operator.html#install-secured-cluster-operator_install-ocp-operator).
+* After added adding the cluster; add the below deployment on the cluster and see if ACS scanns and picks the vulnerabilities.
+
+```bash
+oc new-project test
+
+oc run shell --labels=app=shellshock,team=test-team --image=vulnerables/cve-2014-6271 -n test
+
+oc run samba --labels=app=rce --image=vulnerables/cve-2017-7494 -n test
+
+```
+
 ### Use Case - Integrate enterprise registries + scanner
 
 ### Use Case - Integrate with notification systems
+
+### Use Case - Integrate ACS with slack
 
 ### Use Case - Backup integration
 

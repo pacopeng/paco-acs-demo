@@ -1,0 +1,64 @@
+{
+    "policies": [
+        {
+            "id": "9ec8de4b-fad8-4073-bd94-9153062bf2a9",
+            "name": "Processes running commands with sudo",
+            "description": "Policy will track execution of restricted coammands with sudo",
+            "rationale": "a typical application may not need to change the USER to super user to carry out commands in containerised environment.",
+            "remediation": "Application team needs to reassess the usage of sudo",
+            "disabled": false,
+            "categories": [
+                "Security Best Practices"
+            ],
+            "lifecycleStages": [
+                "RUNTIME"
+            ],
+            "eventSource": "DEPLOYMENT_EVENT",
+            "exclusions": [
+                {
+                    "name": "",
+                    "deployment": {
+                        "name": "",
+                        "scope": {
+                            "cluster": "",
+                            "namespace": "openshift-*",
+                            "label": null
+                        }
+                    },
+                    "image": null,
+                    "expiration": null
+                }
+            ],
+            "scope": [],
+            "severity": "HIGH_SEVERITY",
+            "enforcementActions": [],
+            "notifiers": [],
+            "lastUpdated": "2022-11-23T16:13:12.618349124Z",
+            "SORTName": "",
+            "SORTLifecycleStage": "",
+            "SORTEnforcement": false,
+            "policyVersion": "1.1",
+            "policySections": [
+                {
+                    "sectionName": "process ran with sudo access",
+                    "policyGroups": [
+                        {
+                            "fieldName": "Process Name",
+                            "booleanOperator": "OR",
+                            "negate": false,
+                            "values": [
+                                {
+                                    "value": "sudo"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "mitreAttackVectors": [],
+            "criteriaLocked": false,
+            "mitreVectorsLocked": false,
+            "isDefault": false
+        }
+    ]
+}
