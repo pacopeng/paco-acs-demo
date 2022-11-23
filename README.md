@@ -2,8 +2,29 @@
 
 1. [Intro](#intro)
 1. [Role - Info Security Engineer](#role---info-security-engineer)
+    1. [Use Case - Policy Management](#use-case---policy-management)
+    1. [Use Case - Compliance Reporting and Remediation](#use-case---compliance-reporting-and-remediation)
+    1. [Use Case - Create a new policy](#use-case---create-a-new-policy)
+    1. [Use Case - Vulnerability Management](#use-case---vulnerability-management)
+    1. [Use Case - Add a custom policy based on Risk Identified](#use-case---add-a-custom-policy-based-on-risk-identified)
+    1. [Use Case - Global Search](#use-case---global-search)
+    1. 
 1. [Role - DevSecOps Engineer](#role---devsecops-engineer)
+    1. [Use Case - Pipeline to Images Scan & Image Check](#use-case---pipeline-to-images-scan--image-check)
+    1. [Use Case - Pipeline to check the deployment](#use-case---pipeline-to-check-the-deployment)
+    1. [Use Case: admission.stackrox.io/break-glass:jira-3423](#use-case-admissionstackroxiobreak-glassjira-3423)
+    1. 
 1. [Role - Developer](#role---developer)
+    1. [Use Case - Scan the code in the IDE](#use-case---scan-the-code-in-the-ide)
+    1. [Use Case - Scan the code with KubeLinter](#use-case---scan-the-code-with-kubelinter)
+1. [Role - OpenShift/Kubernetes Platform Engineer](#role---openshiftkubernetes-platform-engineer)
+    1. [Use Case - Add cluster to the ACS](#use-case---add-cluster-to-the-acs)
+    1. [Use Case - Integrate enterprise registries + scanner](#use-case---integrate-enterprise-registries--scanner)
+    1. [Use Case - Integrate with notification systems](#use-case---integrate-with-notification-systems)
+    1. [Use Case - Integrate ACS with slack](#use-case---integrate-acs-with-slack)
+    1. [Use Case - Backup integration](#use-case---backup-integration)
+    1. [Use Case - Third Party automation platform integration via stackrox API](#use-case---third-party-automation-platform-integration-via-stackrox-api)
+    1. [Use Case - Signature Integration](#use-case---signature-integration)
 
 ## Intro
 
