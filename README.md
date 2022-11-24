@@ -6,10 +6,14 @@
     1. [Use Case - Compliance Reporting and Remediation](#use-case---compliance-reporting-and-remediation)
     1. [Use Case - Create a new policy](#use-case---create-a-new-policy)
     1. [Use Case - Vulnerability Management](#use-case---vulnerability-management)
+    1. [Use Case - Report generation of the vulnerablilities](#use-case---report-generation-of-the-vulnerablilities)
+    1. [Use Case - Runtime violations](#use-case---runtime-violations)
+    1. [Use Case - Risk Profiling](#use-case---risk-profiling)
     1. [Use Case - Add a custom policy based on Risk Identified](#use-case---add-a-custom-policy-based-on-risk-identified)
     1. [Use Case - Global Search](#use-case---global-search)
+    1. [Use Case - Network Segmentation and Graph](#use-case---network-segmentation-and-graph)
 1. [Role - DevSecOps Engineer](#role---devsecops-engineer)
-    1. [Use Case - Pipeline to Images Scan & Image Check](#use-case---pipeline-to-images-scan--image-check)
+    1. [Use Case - Pipeline for Image Scan & Image Check](#use-case---pipeline-for-image-scan--image-check)
     1. [Use Case - Pipeline to check the deployment](#use-case---pipeline-to-check-the-deployment)
     1. [Use Case: admission.stackrox.io/break-glass:jira-3423](#use-case-admissionstackroxiobreak-glassjira-3423)
 1. [Role - Developer](#role---developer)
@@ -267,7 +271,7 @@ The Network Graph is a `flow diagram`, `firewall diagram`, and `firewall rule bu
 
 Pipelines uses `roxctl` cli to perfrom it's tasks. Documentation is available [here](https://docs.openshift.com/acs/3.72/cli/getting-started-cli.html).
 
-### Use Case - Pipeline to Images Scan & Image Check
+### Use Case - Pipeline for Image Scan & Image Check
 
 >
 > 1. Edit Pipeline `rox-pipeline` and make tasks -> params -> value=json (for name=output_format).
@@ -459,6 +463,13 @@ Name: unset-memory-requirements
 Name: use-namespace
 Name: wildcard-in-rules
 Name: writable-host-mount
+```
+
+* run the lint on a sample k8s manifest.
+
+```bash
+# run from the folder ~/github/rajiv-ranjan/acs-demo
+kube-linter lint resource/pod.yaml
 ```
 
 ----------
