@@ -38,7 +38,7 @@ Demo is an adaptation from original [google docs](https://docs.google.com/docume
 
 * Upgrade the ACS cluster to latest (3.72.1). Perform the upgrade from 3.70 -> 3.71 -> 3.72
 * Check scanner and scanner-db pods are running in `stackrox` namespace. If not then delete the scanner-db pod and then scanner. You need to do this everytime the service is started on RHPDS.
-* Optional: Upgrade the OCP cluster to latest (4.10.z)
+* Optional: Upgrade the OCP cluster to latest (4.11.z)
 
 ## Role - Info Security Engineer
 
@@ -108,6 +108,8 @@ oc -n stackrox delete pod -lapp=sensor
   * click ocp4-cis to see all the controls.
 * In case the reports are not generated then edit the CronJob `cis-compliance-rerunner` and make the schedule as `*/5 */1 * * *` which translate to `At every 5th minute past every hour`. Alternatively you can add your [own expression](https://crontab.guru/#*/5_*/1_*_*_*).
 
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case - Create a new policy
@@ -125,12 +127,38 @@ Create a new policy to mandate the deployment objects to have Change Request Id.
 * observe the vilation related to the email.
 * noe edit the deployment manifest and add the label and see the violation being gone.
 
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case - Vulnerability Management
 
-* Navigate to Vulnerability Management home page.
-* Choose a project with filters "deployment:" "visa". Look for policy violation of `Kubernetes Actions: Exec into Pod` and `Unauthorized Process Execution`
+* Navigate to Vulnerability Management home page. Walk through the `Dashboard` of VM page.
+* There are different ways in which security team may need to discover vulnerablities. Walk through the Top bar. Different perspective can be selected by clicking `All Entities`.
+* __`CVES` focused__:  Click in the CVEs and discover the details on it. There is a Red Hat tool as well to check and CVE detail i.e. [CVE Checker Labs](https://access.redhat.com/labs/cvechecker/).
+* __`Images` focused__: Shows the image source, top cvss, image status etc as key fields. Click on `gcr.io/rox-se/struts-violations/mastercard-processor:latest` image and discover that OS is publishing any security patches anymore. Look at the `Dockerfile` and `Image Findings`. certain CVEs can be deferred or tagged as False Positive.
+* __`Policies` focused__: Shows the policies that track the vulnerablilities. E.g. `Fixable CVSS >= 7`.
+* __`Cluster` focused__:
+* __`Namespace` focused__:
+* __`Deployment` focused__: Choose Deployment `mastercard-processor` -> apply filter "CVES:" "CVE-2013-0248" -> Components -> "common_fileupload". Check the same CVE on [CVE Checker Labs](https://access.redhat.com/labs/cvechecker/).
+* __`Compoenents` focused__:
+
+[Top](#table-of-contents)
+
+----------
+
+### Use Case - Report generation of the vulnerablilities
+
+* Walk through the report generation process.
+
+[Top](#table-of-contents)
+
+----------
+
+### Use Case - Runtime violations
+
+* Navigate to Violations page.
+* Choose a Deployment with filters "deployment:" "visa". Look for policy violation of `Kubernetes Actions: Exec into Pod` and `Unauthorized Process Execution`
 * if you do not see any pod running then please edit the deployment object and delete "securityContent" section
 
 ```yml
@@ -142,7 +170,8 @@ securityContext:
 
 ```
 
-* Wait for a while the pod is coded to trigger few commands that will raise `Unauthorized Process Execution`. Once the violation occurs; navigate to "Risk -> visa-processor -> Risk Indicator -> Suspicious Process Execution" and "Process Discovery"
+* Choose `Mark as resolved` for `Kubernetes Actions: Exec into Pod` and `Unauthorized Process Execution`.
+* Wait for a while the pod is coded to trigger few commands that will raise `Unauthorized Process Execution` violation. Once the violation occurs; navigate to "Risk -> visa-processor -> Risk Indicator -> Suspicious Process Execution" and "Process Discovery"
 * To simulate `Kubernetes Actions: Exec into Pod`; Create a dummy file via oc exec command
 
 ```bash
@@ -420,6 +449,6 @@ oc run samba --labels=app=rce --image=vulnerables/cve-2017-7494 -n test
 
 ### Use Case - Signature Integration
 
-[Top](#table-of-contents)
+[move to TOC](#table-of-contents)
 
 ----------
