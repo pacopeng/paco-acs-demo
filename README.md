@@ -39,6 +39,7 @@ Demo is an adaptation from original [google docs](https://docs.google.com/docume
 * Upgrade the ACS cluster to latest (3.72.1). Perform the upgrade from 3.70 -> 3.71 -> 3.72
 * Check scanner and scanner-db pods are running in `stackrox` namespace. If not then delete the scanner-db pod and then scanner. You need to do this everytime the service is started on RHPDS.
 * Optional: Upgrade the OCP cluster to latest (4.11.z)
+* Install web terminal operator on both OCP 4 clusters
 
 ## Role - Info Security Engineer
 
@@ -136,7 +137,7 @@ Create a new policy to mandate the deployment objects to have Change Request Id.
 * Navigate to Vulnerability Management home page. Walk through the `Dashboard` of VM page.
 * There are different ways in which security team may need to discover vulnerablities. Walk through the Top bar. Different perspective can be selected by clicking `All Entities`.
 * __`CVES` focused__:  Click in the CVEs and discover the details on it. There is a Red Hat tool as well to check and CVE detail i.e. [CVE Checker Labs](https://access.redhat.com/labs/cvechecker/).
-* __`Images` focused__: Shows the image source, top cvss, image status etc as key fields. Click on `gcr.io/rox-se/struts-violations/mastercard-processor:latest` image and discover that OS is publishing any security patches anymore. Look at the `Dockerfile` and `Image Findings`. certain CVEs can be deferred or tagged as False Positive.
+* __`Images` focused__: Shows the image source, top cvss, image status etc as key fields. Click on `gcr.io/rox-se/struts-violations/mastercard-processor:latest` image and discover that OS is publishing any security patches anymore. Look at the `Dockerfile` and `Image Findings`. certain CVEs can be deferred or tagged as False Positive. Filter the CVE for `CVE-2013-0248` and click on the component. It should which `war` file has the `vulnerable jar` file.
 * __`Policies` focused__: Shows the policies that track the vulnerablilities. E.g. `Fixable CVSS >= 7`.
 * __`Cluster` focused__:
 * __`Namespace` focused__:
@@ -185,6 +186,27 @@ oc exec visa-processor-586d8b989d-l5lhx -c visa-processor -n payments -- head RE
 
 * Click on the violation and walk through the `Violation Events`
 
+[Top](#table-of-contents)
+
+----------
+
+### Use Case - Risk Profiling
+
+* Navigate to Risk view where we go beyond the basics of vulnerabilities to understand how `deployment` configuration and `runtime activity` impact the likelihood of an exploit occurring and how successful those exploits will be.
+* Observe the priority. These priority is not static. Let's see an example.
+* Apply the filter "Deployment:" "currency". See the `priority rank 150`. Click and explore further. You will observfe that there no process active. If there are suspicious processes running that should change the Risk associated with the deployment.
+* Make the Pods running by deleting the SCC from the deployment manifest. Take a terminal to the pod and run few admin priviledged commands like chmod.
+* Check the new `priority rank 97`
+* Now run the following command in the same pod
+
+```bash
+while true ;do  netstat; done
+```
+
+* Check the `new priority rank of 53` and a `red dot` at the start of the row.
+
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case - Add a custom policy based on Risk Identified
@@ -205,12 +227,39 @@ apt-get update
 * Note the violation being generated. Navigate to Vilation tab with filter "policy:" "sudo".
 * Walk through the "violation events".
 
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case - Global Search
 
+Global search allows the security engineer to search any security related artefact. E.g. You want to search for a common project `test` across multiple clusters.
+
+* Create the test project and some vulnerable deployments.
+
+```bash
+oc new-project test
+oc run shell --labels=app=shellshock,team=test-team --image=vulnerables/cve-2014-6271 -n test 
+oc run samba --labels=app=rce --image=vulnerables/cve-2017-7494 -n test
+```
+
 * Click on the seach icon on the top right corner and demo different filters.
-* Apply filter "policy:" "Deployment", "image:" ""
+* Apply filter "Violation State:" "ACTIVE", "Namespace:" "test", "Policy:" "Latets". Walk through the result.
+
+[Top](#table-of-contents)
+
+----------
+
+### Use Case - Network Segmentation and Graph
+
+The Network Graph is a `flow diagram`, `firewall diagram`, and `firewall rule builder` in one.
+
+* Zoom in on Payments Namespace. As we zoom in, the namespace boxes show the individual deployment names.
+* Click on visa-processor deployment. Clicking on a deployment brings up details of the types of traffic observed including source or destination and ports.
+* Show the `Flows` and `Network Policies` on the ribbon. Expand the ribbon.
+* Walk through the `Network Flow` and `Baseline Settings`
+
+[Top](#table-of-contents)
 
 ----------
 
@@ -220,6 +269,11 @@ Pipelines uses `roxctl` cli to perfrom it's tasks. Documentation is available [h
 
 ### Use Case - Pipeline to Images Scan & Image Check
 
+>
+> 1. Edit Pipeline `rox-pipeline` and make tasks -> params -> value=json (for name=output_format).
+>
+> 2. Make sure the `scanner` and `scanner_db` are running.
+>
 1. Show the image scan and image check against mongodb image.
     1. No vul -> quay.io/mongodb/mongodb-enterprise-database:2.0.2
     1. Old image with vul -> quay.io/mongodb/mongodb-enterprise-database:0.1
@@ -449,6 +503,6 @@ oc run samba --labels=app=rce --image=vulnerables/cve-2017-7494 -n test
 
 ### Use Case - Signature Integration
 
-[move to TOC](#table-of-contents)
+[Top](#table-of-contents)
 
 ----------
