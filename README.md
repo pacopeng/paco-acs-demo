@@ -67,6 +67,8 @@ Demo is an adaptation from original [google docs](https://docs.google.com/docume
   * In the section labeled "PASSING STANDARDS ACROSS CLUSTERS", click on CIS Docker.
   * Many of the controls in CIS Docker refer to the configuration of the Docker engine on each Kubernetes nodes, but a significant number of CIS Docker controls are best practices for building and using containers, and ACS has policies to enforce their use.
 
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case - Compliance Reporting and Remediation
@@ -283,6 +285,11 @@ Pipelines uses `roxctl` cli to perfrom it's tasks. Documentation is available [h
     1. Old image with vul -> quay.io/mongodb/mongodb-enterprise-database:0.1
     1. Then switch off the policy "Policy": "Fixable Severity at least Important" and re-run the previous step and check the logs.
     1. Switch on the policy back again.
+1. Show the image scan with `Java` and `Node` packages.
+    1. Scan `quay.io/rajivranjan/tasks-app:latest` and navigate to component `ansi-regex 3.0.0`.
+    1. Navigate to Vulnerability Management -> Images -> filter for `quay.io/rajivranjan/tasks-app:latest`. Look for the `Source` column. It has `OS`, `Java` and `Node` vulnerablities.
+
+[Top](#table-of-contents)
 
 ----------
 
@@ -392,9 +399,13 @@ spec:
     weight: null
 ```
 
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case: admission.stackrox.io/break-glass:jira-3423
+
+[Top](#table-of-contents)
 
 ----------
 
@@ -404,6 +415,8 @@ spec:
 
 * Install plugin from the [marketplace](https://marketplace.visualstudio.com/items?itemName=redhat.fabric8-analytics)
 * Walk through the sample code and it's analysis.
+
+[Top](#table-of-contents)
 
 ----------
 
@@ -472,6 +485,8 @@ Name: writable-host-mount
 kube-linter lint resource/pod.yaml
 ```
 
+[Top](#table-of-contents)
+
 ----------
 
 ## Role - OpenShift/Kubernetes Platform Engineer
@@ -490,29 +505,125 @@ oc run samba --labels=app=rce --image=vulnerables/cve-2017-7494 -n test
 
 ```
 
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case - Integrate enterprise registries + scanner
+
+You can integrate RHACS with major image registries, including:
+
+1. Amazon Elastic Container Registry (ECR)
+1. Docker Hub
+1. Google Container Registry (GCR)
+1. Google Artifact Registry
+1. IBM Cloud Container Registry (ICR)
+1. JFrog Artifactory
+1. Microsoft Azure Container Registry (ACR)
+1. Red Hat Quay
+1. Red Hat container registries
+1. Sonatype Nexus
+1. Any other registry that uses the Docker Registry HTTP API
+
+ACS can leverage Scanners like:
+1. Clair
+1. Google Container Analysis
+1. RH Quay
+
+[Top](#table-of-contents)
 
 ----------
 
 ### Use Case - Integrate with notification systems
 
+You can integrate RHACS with notification systems like:
+
+1. Slack: send `alerts`.
+1. Microsoft Teams:
+1. PagerDuty: send `alerts`.
+1. Sumo Logic: send `alerts`.
+1. Jira Software: send `alerts` and creates issues.
+1. Email: Can send email to a `centralised team email id` or read `email` annotation from `deployment` manifest.
+1. Splunk: send `alerts`.
+1. Syslog: send `alerts` and `audit events` using the syslog protocol. This can feed into SIEM solutions.
+1. AWS Security Hub:
+1. GCP Security Command Center: send `alerts`
+1. Web Hook: send `alerts` to a webhook URL over HTTP protocol and JSON message.
+
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case - Integrate ACS with slack
+
+[Top](#table-of-contents)
 
 ----------
 
 ### Use Case - Backup integration
 
+ACS needs to backup configurations, resources, events, and certificates.
+
+____Automatic Backup____
+
+You can integrate RHACS with notification systems like:
+
+1. AWS S3
+1. Google Cloud Storage:
+
+____On-demand Backup____
+
+1. Use `roxctl` to take backup
+
+* run roxctl command. Below method is using `admin` user credentials. Same can be achieved via API token too.
+
+```bash
+roxctl -p "$ROX_ADMIN_PASSWORD"  -e "$ROX_CENTRAL_ADDRESS" central backup
+
+WARN:	The remote endpoint failed TLS validation. This will be a fatal error in future releases.
+Please do one of the following at your earliest convenience:
+  1. Obtain a valid certificate for your Central instance/Load Balancer.
+  2. Use the --ca option to specify a custom CA certificate (PEM format). This Certificate can be obtained by
+     running "roxctl central cert".
+  3. Update all your roxctl usages to pass the --insecure-skip-tls-verify option, in order to
+     suppress this warning and retain the old behavior of not validating TLS certificates in
+     the future (NOT RECOMMENDED).
+
+
+ERROR:	Certificate validation error: x509: certificate is valid for central.stackrox, central.stackrox.svc, not central-stackrox.apps.cluster-gmlfx.gmlfx.sandbox2119.opentlc.com
+14.1 MiB [---------->>>>>---------->>>>>---------->>>>>---------->>>>>---------->>>>>---------->>>>>---------->>>>>-------------] 1.1 MiB/s stackrox_db_2022_11_25_10_01_05.zip
+Wrote backup file to "stackrox_db_2022_11_25_10_01_05.zip"
+```
+
+* Use above method to get the backup and can push zip file to `ODF S3` bucket.
+
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case - Third Party automation platform integration via stackrox API
 
+[Top](#table-of-contents)
+
 ----------
 
 ### Use Case - Signature Integration
+
+[Top](#table-of-contents)
+
+----------
+
+### Use Case - Integrate with client CI system
+
+Client CI system can integrate with stackrox via roxctl.
+
+[Top](#table-of-contents)
+
+----------
+
+### Use Case - Support for online and offline modes
+
+[Documentation](https://docs.openshift.com/acs/3.72/configuration/enable-offline-mode.html)
 
 [Top](#table-of-contents)
 
