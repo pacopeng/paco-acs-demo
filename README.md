@@ -15,6 +15,7 @@
 1. [Role - DevSecOps Engineer](#role---devsecops-engineer)
     1. [Use Case - Pipeline for Image Scan & Image Check](#use-case---pipeline-for-image-scan--image-check)
     1. [Use Case - Pipeline to check the deployment](#use-case---pipeline-to-check-the-deployment)
+    1. [Use Case - Integrate with client CI system](#use-case---integrate-with-client-ci-system)
     1. [Use Case: admission.stackrox.io/break-glass:jira-3423](#use-case-admissionstackroxiobreak-glassjira-3423)
 1. [Role - Developer](#role---developer)
     1. [Use Case - Scan the code in the IDE](#use-case---scan-the-code-in-the-ide)
@@ -23,10 +24,11 @@
     1. [Use Case - Add cluster to the ACS](#use-case---add-cluster-to-the-acs)
     1. [Use Case - Integrate enterprise registries + scanner](#use-case---integrate-enterprise-registries--scanner)
     1. [Use Case - Integrate with notification systems](#use-case---integrate-with-notification-systems)
-    1. [Use Case - Integrate ACS with slack](#use-case---integrate-acs-with-slack)
+        1. [Use Case - Integrate ACS with slack](#use-case---integrate-acs-with-slack)
     1. [Use Case - Backup integration](#use-case---backup-integration)
     1. [Use Case - Third Party automation platform integration via stackrox API](#use-case---third-party-automation-platform-integration-via-stackrox-api)
     1. [Use Case - Signature Integration](#use-case---signature-integration)
+    1. [Use Case - Support for online and offline modes](#use-case---support-for-online-and-offline-modes)
 
 ## Intro
 
@@ -403,6 +405,14 @@ spec:
 
 ----------
 
+### Use Case - Integrate with client CI system
+
+Client CI system can integrate with stackrox via roxctl.
+
+[Top](#table-of-contents)
+
+----------
+
 ### Use Case: admission.stackrox.io/break-glass:jira-3423
 
 [Top](#table-of-contents)
@@ -550,11 +560,7 @@ You can integrate RHACS with notification systems like:
 1. GCP Security Command Center: send `alerts`
 1. Web Hook: send `alerts` to a webhook URL over HTTP protocol and JSON message.
 
-[Top](#table-of-contents)
-
-----------
-
-### Use Case - Integrate ACS with slack
+#### Use Case - Integrate ACS with slack
 
 [Top](#table-of-contents)
 
@@ -608,14 +614,6 @@ Wrote backup file to "stackrox_db_2022_11_25_10_01_05.zip"
 ----------
 
 ### Use Case - Signature Integration
-
-[Top](#table-of-contents)
-
-----------
-
-### Use Case - Integrate with client CI system
-
-Client CI system can integrate with stackrox via roxctl.
 
 [Top](#table-of-contents)
 
