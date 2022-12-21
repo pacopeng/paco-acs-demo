@@ -574,7 +574,7 @@ docker run -d \
 curl -u openshift:redhat http://localhost:${REG_PORT}/v2/_catalog
 
 ```
-![Registry-1](../resource/integrate-registry-1.png)
+![Registry-1](resource/integrate-registry-1.png)
 
 
 
