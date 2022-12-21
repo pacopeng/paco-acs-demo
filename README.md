@@ -614,6 +614,17 @@ Wrote backup file to "stackrox_db_2022_11_25_10_01_05.zip"
 ----------
 
 ### Use Case - Signature Integration
+Currently ACS only support integrate with cosign
+Here, we use cosign to demo the signature integration
+
+Intall cosign with binary
+'''
+wget "https://github.com/sigstore/cosign/releases/download/v1.6.0/cosign-linux-amd64"
+mv cosign-linux-amd64 /usr/local/bin/cosign
+chmod +x /usr/local/bin/cosign
+'''
+
+
 
 [Top](#table-of-contents)
 
