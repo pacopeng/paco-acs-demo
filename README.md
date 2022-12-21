@@ -540,6 +540,41 @@ ACS can leverage Scanners like:
 1. Google Container Analysis
 1. RH Quay
 
+Demo Integrate with docker registries
+```bash
+#####Deploy docker registry service###########
+BASE_PATH=/opt/acs-demo
+mkdir -p ${BASE_PATH}/data && mkdir -p ${BASE_PATH}/{auth,certs}
+tree ${BASE_PATH}
+
+yum -y install httpd-tools
+
+htpasswd -bBc ${BASE_PATH}/auth/htpasswd openshift redhat
+
+cat ${BASE_PATH}/auth/htpasswd
+
+REG_NAME=acs-demo
+REG_PORT=50002
+REG_IMAGE_NAME=hub-mirror.c.163.com/library/registry:latest
+
+docker run -d \
+    -p ${REG_PORT}:5000 \
+    --name reg-${REG_NAME} \
+    --restart=always \
+    -v ${BASE_PATH}/data:/var/lib/registry \
+    -e REGISTRY_STORAGE_DELETE_ENABLED=true \
+    -e REGISTRY_COMPATIBILITY_SCHEMA1_ENABLED=true \
+    -v ${BASE_PATH}/auth:/auth \
+    -e REGISTRY_AUTH=htpasswd \
+    -e REGISTRY_AUTH_HTPASSWD_REALM=basic-realm \
+    -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+    ${REG_IMAGE_NAME}
+
+
+curl -u openshift:redhat http://localhost:${REG_PORT}/v2/_catalog
+
+```
+
 [Top](#table-of-contents)
 
 ----------
@@ -618,11 +653,24 @@ Currently ACS only support integrate with cosign
 Here, we use cosign to demo the signature integration
 
 Intall cosign with binary
-'''
+```bash
 wget "https://github.com/sigstore/cosign/releases/download/v1.6.0/cosign-linux-amd64"
 mv cosign-linux-amd64 /usr/local/bin/cosign
 chmod +x /usr/local/bin/cosign
-'''
+```
+Generate a keypair
+```bash
+[root@registry acs-demo]# cosign generate-key-pair
+Enter password for private key: 
+Enter password for private key again: 
+Private key written to cosign.key
+Public key written to cosign.pub
+```
+
+Sign a container and store the signature in the registry
+```bash
+```
+
 
 
 
